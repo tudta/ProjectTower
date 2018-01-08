@@ -256,7 +256,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.344
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -336,9 +336,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbda6b2816e73934faef01badf4fd041, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  audSource: {fileID: 57509807}
-  audioClips:
-  - {fileID: 8300000, guid: d0f904ba266f1ad4db7db41d6e9e57ec, type: 3}
+  masterVolume: 1
+  musicVolume: 1
+  dialogueVolume: 1
+  menuEffectVolume: 1
+  gameEffectVolume: 1
+  musicClipsPath: Sound/Music
+  dialogueClipsPath: Sound/Dialogue
+  menuEffectClipsPath: Sound/SoundEffectsMenu
+  gameEffectClipsPath: Sound/SoundEffectsGame
+  musicClips: []
+  dialogueClips: []
+  menuEffectClips: []
+  gameEffectClips: []
+  globalAudSource: {fileID: 57509807}
 --- !u!1 &143100310
 GameObject:
   m_ObjectHideFlags: 0
