@@ -17,7 +17,9 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private List<AudioClip> dialogueClips = new List<AudioClip>();
     [SerializeField] private List<AudioClip> menuEffectClips = new List<AudioClip>();
     [SerializeField] private List<AudioClip> gameEffectClips = new List<AudioClip>();
-    [SerializeField] private AudioSource globalAudSource = null;
+    private List<AudioSource> globalAudSources = new List<AudioSource>();
+    private List<AudioSource> tmpAudSources = new List<AudioSource>();
+    private AudioSource tmpAudSource = null;
 
     // Use this for initialization
     void Start () {
@@ -33,6 +35,40 @@ public class AudioManager : MonoBehaviour {
         LoadAudioClips();
         //Change this to occur when MainMenu scene is loaded. SceneManager.sceneLoaded
         PlayMainMenuMusic();
+    }
+
+    private AudioSource GetPooledGlobalAudioSource() {
+        foreach (AudioSource gAudSource in globalAudSources) {
+            if (!gAudSource.enabled) {
+                gAudSource.enabled = true;
+                return gAudSource;
+            }
+        }
+        tmpAudSource = gameObject.AddComponent<AudioSource>();
+        globalAudSources.Add(tmpAudSource);
+        return tmpAudSource;
+    }
+
+    private AudioSource GetPooledLocalAudioSource(GameObject audObj) {
+        tmpAudSources.Clear();
+        tmpAudSources.AddRange(audObj.GetComponents<AudioSource>());
+        if (tmpAudSources.Count == 0) {
+
+            return audObj.AddComponent<AudioSource>();
+        }
+        else {
+            foreach (AudioSource audSource in tmpAudSources) {
+                if (!audSource.enabled) {
+                    audSource.enabled = true;
+                    return audSource;
+                }
+            }
+            return audObj.AddComponent<AudioSource>();
+        }
+    }
+
+    private void ReturnAudioSourceToPool(AudioSource source) {
+        source.enabled = false;
     }
 
     public void LoadAudioClips() {
@@ -65,24 +101,34 @@ public class AudioManager : MonoBehaviour {
         else if (menuEffectClips.Contains(audClip)) {
             return menuEffectVolume;
         }
-        else {
+        else if (gameEffectClips.Contains(audClip)) {
             return gameEffectVolume;
         }
+        return 0.0f;
     }
 
-    public void PlaySound(AudioClip audClip) {
-        globalAudSource.clip = audClip;
-        globalAudSource.volume = masterVolume * GetSoundTypeVolume(audClip);
-        globalAudSource.Play();
+    private IEnumerator StartSoundLifetime(AudioSource audSource) {
+        yield return new WaitForSeconds(audSource.clip.length);
+        ReturnAudioSourceToPool(audSource);
     }
 
-    public void PlaySound(AudioClip audClip, AudioSource audSource) {
-        audSource.clip = audClip;
-        audSource.volume = masterVolume * GetSoundTypeVolume(audClip);
-        audSource.Play();
+    public void PlayGlobalSound(AudioClip audClip) {
+        tmpAudSource = GetPooledGlobalAudioSource();
+        tmpAudSource.clip = audClip;
+        tmpAudSource.volume = masterVolume * GetSoundTypeVolume(audClip);
+        tmpAudSource.Play();
+        StartCoroutine(StartSoundLifetime(tmpAudSource));
+    }
+
+    public void PlayLocalSound(AudioClip audClip, GameObject audObj) {
+        tmpAudSource = GetPooledLocalAudioSource(audObj);
+        tmpAudSource.clip = audClip;
+        tmpAudSource.volume = masterVolume * GetSoundTypeVolume(audClip);
+        tmpAudSource.Play();
+        StartCoroutine(StartSoundLifetime(tmpAudSource));
     }
 
     public void PlayMainMenuMusic() {
-        PlaySound(musicClips[0]);
+        PlayGlobalSound(musicClips[0]);
     }
 }
