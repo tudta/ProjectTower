@@ -28,7 +28,7 @@ public class AudioManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 	}
 
     private void Init() {
@@ -50,10 +50,8 @@ public class AudioManager : MonoBehaviour {
     }
 
     private AudioSource GetPooledLocalAudioSource(GameObject audObj) {
-        tmpAudSources.Clear();
-        tmpAudSources.AddRange(audObj.GetComponents<AudioSource>());
+        tmpAudSources = GetLocalAudioSourceList(audObj);
         if (tmpAudSources.Count == 0) {
-
             return audObj.AddComponent<AudioSource>();
         }
         else {
@@ -69,6 +67,31 @@ public class AudioManager : MonoBehaviour {
 
     private void ReturnAudioSourceToPool(AudioSource source) {
         source.enabled = false;
+    }
+
+    private List<AudioSource> GetLocalAudioSourceList(GameObject audObj) {
+        tmpAudSources.Clear();
+        tmpAudSources.AddRange(audObj.GetComponents<AudioSource>());
+        return tmpAudSources;
+    }
+
+    private AudioSource GetPlayingGlobalSoundSource(AudioClip clip) {
+        foreach (AudioSource audSource in globalAudSources) {
+            if (audSource.enabled && audSource.clip == clip) {
+                return audSource;
+            }
+        }
+        return null;
+    }
+
+    private AudioSource GetPlayingLocalSoundSource(AudioClip clip, GameObject audObj) {
+        tmpAudSources = GetLocalAudioSourceList(audObj);
+        foreach (AudioSource audSource in tmpAudSources) {
+            if (audSource.enabled && audSource.clip == clip) {
+                return audSource;
+            }
+        }
+        return null;
     }
 
     public void LoadAudioClips() {
@@ -112,23 +135,45 @@ public class AudioManager : MonoBehaviour {
         ReturnAudioSourceToPool(audSource);
     }
 
-    public void PlayGlobalSound(AudioClip audClip) {
-        tmpAudSource = GetPooledGlobalAudioSource();
+    public void PlayGlobalSound(AudioClip audClip, bool isLooping, bool canPlayMultiple) {
+        if (!canPlayMultiple) {
+            tmpAudSource = GetPlayingGlobalSoundSource(audClip);
+            if (tmpAudSource == null) {
+                tmpAudSource = GetPooledGlobalAudioSource();
+            }
+        }
+        else {
+            tmpAudSource = GetPooledGlobalAudioSource();
+        }
         tmpAudSource.clip = audClip;
+        tmpAudSource.loop = isLooping;
         tmpAudSource.volume = masterVolume * GetSoundTypeVolume(audClip);
         tmpAudSource.Play();
-        StartCoroutine(StartSoundLifetime(tmpAudSource));
+        if (!isLooping) {
+            StartCoroutine(StartSoundLifetime(tmpAudSource));
+        }
     }
 
-    public void PlayLocalSound(AudioClip audClip, GameObject audObj) {
-        tmpAudSource = GetPooledLocalAudioSource(audObj);
+    public void PlayLocalSound(AudioClip audClip, GameObject audObj, bool isLooping, bool canPlayMultiple) {
+        if (!canPlayMultiple) {
+            tmpAudSource = GetPlayingLocalSoundSource(audClip, audObj);
+            if (tmpAudSource == null) {
+                tmpAudSource = GetPooledLocalAudioSource(audObj);
+            }
+        }
+        else {
+            tmpAudSource = GetPooledLocalAudioSource(audObj);
+        }
         tmpAudSource.clip = audClip;
+        tmpAudSource.loop = isLooping;
         tmpAudSource.volume = masterVolume * GetSoundTypeVolume(audClip);
         tmpAudSource.Play();
-        StartCoroutine(StartSoundLifetime(tmpAudSource));
+        if (!isLooping) {
+            StartCoroutine(StartSoundLifetime(tmpAudSource));
+        }
     }
 
     public void PlayMainMenuMusic() {
-        PlayGlobalSound(musicClips[0]);
+        PlayGlobalSound(musicClips[0], true, false);
     }
 }
