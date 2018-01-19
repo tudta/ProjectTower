@@ -4,6 +4,17 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour {
+
+    public enum SoundTypes {
+        NONE,
+        MASTER,
+        MUSIC,
+        DIALOGUE,
+        MENU,
+        GAME
+    }
+
+    private static AudioManager instance = null;
     [SerializeField] [Range(0, 1)] private float masterVolume = 0.0f;
     [SerializeField] [Range(0, 1)] private float musicVolume = 0.0f;
     [SerializeField] [Range(0, 1)] private float dialogueVolume = 0.0f;
@@ -21,6 +32,8 @@ public class AudioManager : MonoBehaviour {
     private List<AudioSource> tmpAudSources = new List<AudioSource>();
     private AudioSource tmpAudSource = null;
 
+    public static AudioManager Instance { get { return instance; } set { instance = value; } }
+
     // Use this for initialization
     void Start () {
         Init();
@@ -32,9 +45,34 @@ public class AudioManager : MonoBehaviour {
 	}
 
     private void Init() {
+        if (instance == null) {
+            instance = this;
+        }
+        else {
+            Destroy(this);
+        }
         LoadAudioClips();
-        //Change this to occur when MainMenu scene is loaded. SceneManager.sceneLoaded
         PlayMainMenuMusic();
+    }
+
+    public void ChangeVolume(SoundTypes sType, float volume) {
+        switch (sType) {
+            case SoundTypes.MASTER:
+                masterVolume = volume;
+                break;
+            case SoundTypes.MUSIC:
+                musicVolume = volume;
+                break;
+            case SoundTypes.DIALOGUE:
+                dialogueVolume = volume;
+                break;
+            case SoundTypes.MENU:
+                menuEffectVolume = volume;
+                break;
+            case SoundTypes.GAME:
+                gameEffectVolume = volume;
+                break;
+        }
     }
 
     private AudioSource GetPooledGlobalAudioSource() {

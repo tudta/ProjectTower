@@ -44,8 +44,4 @@ public class MenuManager : MonoBehaviour {
         CloseMenuGroups();
         keyBindingsMenuGroup.SetActive(true);
     }
-
-    public void PlayMenuChangeSound() {
-
-    }
 }
