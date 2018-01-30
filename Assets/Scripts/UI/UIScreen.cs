@@ -2,10 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class UIScreen : MonoBehaviour {
-    protected RectTransform rectTrans = null;
+[RequireComponent(typeof(Animator))]
+public class UIScreen : UIElement {
+    private RectTransform rectTrans = null;
     private List<Transform> childTransforms = null;
+    private List<UIElement> childUIElements = null;
+    private Animator screenAnim = null;
+    private int animParameterId = 0;
+    private const string transitionParameterName = "IsOpen";
+    private const string openedStateName = "Open";
+    private const string closedStateName = "Closed";
 
     public virtual void Awake() {
         Init();
@@ -26,49 +34,59 @@ public class UIScreen : MonoBehaviour {
         if (rectTrans == null) {
             Debug.LogError("Error: No Rect Transform found on GameObject ' " + gameObject.name + "'");
         }
-        childTransforms = new List<Transform>(GetComponentsInChildren<Transform>());
-        childTransforms.Remove(transform);
-        HideScreenImmediate();
+        childUIElements = new List<UIElement>(GetComponentsInChildren<UIElement>());
+        childUIElements.Remove(this);
+        screenAnim = GetComponent<Animator>();
+        animParameterId = Animator.StringToHash(transitionParameterName);
     }
 
-    public virtual void ShowScreen() {
-        foreach (Transform childTrans in childTransforms) {
-            childTrans.gameObject.SetActive(true);
+    public override void Show() {
+        StartCoroutine(PlayShowScreenAnimation());
+    }
+
+    private IEnumerator PlayShowScreenAnimation() {
+        screenAnim.SetBool(transitionParameterName, true);
+        //yield return null;
+        yield return new WaitForSeconds(screenAnim.GetCurrentAnimatorStateInfo(0).length);
+        OnShown();
+    }
+
+    public override void OnShown() {
+        base.OnShown();
+    }
+
+    public override void Hide() {
+        StartCoroutine(PlayHideScreenAnimation());
+    }
+
+    private IEnumerator PlayHideScreenAnimation() {
+        screenAnim.SetBool(transitionParameterName, false);
+        //yield return null;
+        yield return new WaitForSeconds(screenAnim.GetCurrentAnimatorStateInfo(0).length);
+        OnHidden();
+    }
+
+    public override void OnHidden() {
+        base.OnHidden();
+    }
+
+    public override void Enable() {
+        foreach (UIElement element in childUIElements) {
+            element.Enable();
         }
-        ShowScreenDone();
     }
 
-    public virtual void ShowScreenDone() {
-
+    public override void OnEnabled() {
+        base.OnEnabled();
     }
 
-    public virtual void ShowScreenImmediate() {
-        foreach (Transform childTrans in childTransforms) {
-            childTrans.gameObject.SetActive(true);
+    public override void Disable() {
+        foreach (UIElement element in childUIElements) {
+            element.Disable();
         }
-        ShowScreenDone();
     }
 
-    public virtual void HideScreen(Action onDoneCallback = null) {
-        foreach (Transform childTrans in childTransforms) {
-            childTrans.gameObject.SetActive(false);
-        }
-        onDoneCallback();
-        HideScreenDone();
-    }
-
-    public virtual void HideScreenDone() {
-        
-    }
-
-    public virtual void HideScreenImmediate() {
-        foreach (Transform childTrans in childTransforms) {
-            childTrans.gameObject.SetActive(false);
-        }
-        HideScreenDone();
-    }
-
-    public virtual void DisableScreen() {
-        
+    public override void OnDisabled() {
+        base.OnDisabled();
     }
 }

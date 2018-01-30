@@ -52,7 +52,6 @@ public class AudioManager : MonoBehaviour {
             Destroy(this);
         }
         LoadAudioClips();
-        PlayMainMenuMusic();
     }
 
     public void ChangeVolume(SoundTypes sType, float volume) {

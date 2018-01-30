@@ -18,9 +18,9 @@ public class UIManager : MonoBehaviour {
 
     private Dictionary<Screens, string> requiredScreens = new Dictionary<Screens, string>() {
         {Screens.MAIN_MENU, "Screens/Screen_MainMenu"},
-        {Screens.OPTIONS, "Screens/Screen_Options"},
-        {Screens.SOUND, "Screens/Screen_Sound"},
-        {Screens.KEY_BINDING, "Screens/Screen_KeyBinding"},
+        {Screens.OPTIONS, "Screens/Screen_OptionsMenu"},
+        {Screens.SOUND, "Screens/Screen_SoundMenu"},
+        {Screens.KEY_BINDING, "Screens/Screen_KeyBindingsMenu"},
         //{Screens.WORLD_MAP, "Screens/Screen_WorldMap"},
         {Screens.TOWN, "Screens/Screen_Town"},
         //{Screens.STORE, "Screens/Screen_Store"},
@@ -88,7 +88,6 @@ public class UIManager : MonoBehaviour {
         GameObject instantiatedScreen = Instantiate(Resources.Load<GameObject>(prefabLocation), canvasRootObject.transform, false);
         UIScreen screenPanel = instantiatedScreen.GetComponent<UIScreen>();
         availableScreens.Add(screenType, screenPanel);
-        //screenPanel.HideScreen();
     }
 
     public void OpenScreen(Screens screen, bool clearHistory = false) {
@@ -106,9 +105,9 @@ public class UIManager : MonoBehaviour {
 
         if (panel != null) {
             if (screenStack.Count > 0) {
-                availableScreens[screenStack.Peek()].HideScreen(() =>
-                {
-                    availableScreens[screen].ShowScreen();
+                availableScreens[screenStack.Peek()].OnUIElementHidden += () => {
+                    //Needs to wait for animation to finish [x]
+                    availableScreens[screen].Show();
 
                     if (clearHistory) {
                         screenStack.Clear();
@@ -116,11 +115,12 @@ public class UIManager : MonoBehaviour {
 
                     screenStack.Push(screen);
                     currentScreen = screen;
-                });
+                };
+                availableScreens[screenStack.Peek()].Hide();
             }
             else // we don't need to wait
             {
-                availableScreens[screen].ShowScreen();
+                availableScreens[screen].Show();
 
                 if (clearHistory) {
                     screenStack.Clear();
@@ -145,11 +145,12 @@ public class UIManager : MonoBehaviour {
             return;
         }
 
-        availableScreens[screenStack.Pop()].HideScreen(() =>
-        {
-            availableScreens[screenStack.Peek()].ShowScreen();
+        availableScreens[screenStack.Peek()].OnUIElementHidden += () => {
+            //Need to wait for animation to finish [x]
+            availableScreens[screenStack.Peek()].Show();
             currentScreen = screenStack.Peek();
-        });
+        };
+        availableScreens[screenStack.Pop()].Hide();
     }
 
     public void PopToRoot() {
@@ -158,15 +159,15 @@ public class UIManager : MonoBehaviour {
             return;
         }
 
-        availableScreens[screenStack.Pop()].HideScreen(() =>
-        {
-
+        availableScreens[screenStack.Peek()].OnUIElementHidden += () => {
+            //Need to wait for animation to finish [x]
             while (screenStack.Count > 1) {
                 screenStack.Pop();
             }
 
-            availableScreens[screenStack.Peek()].ShowScreen();
+            availableScreens[screenStack.Peek()].Show();
             currentScreen = screenStack.Peek();
-        });
+        };
+        availableScreens[screenStack.Pop()].Hide();
     }
 }

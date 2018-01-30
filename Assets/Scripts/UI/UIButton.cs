@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(Button))]
-public abstract class UIButton : MonoBehaviour {
+public abstract class UIButton : UIElement {
     public Button button = null;
 
     public virtual void Awake() {
@@ -27,10 +27,38 @@ public abstract class UIButton : MonoBehaviour {
     }
 
     public virtual void OnClick() {
-        Debug.Log("Base Button OnClick");
+        Debug.LogWarning("Base Button OnClick");
     }
 
-    public virtual void DisableButton() {
+    public override void Show() {
+        base.Show();
+    }
+
+    public override void OnShown() {
+        base.OnShown();
+    }
+
+    public override void Hide() {
+        base.Hide();
+    }
+
+    public override void OnHidden() {
+        base.OnHidden();
+    }
+
+    public override void Enable() {
+        button.interactable = true;
+    }
+
+    public override void OnEnabled() {
+        base.OnEnabled();
+    }
+
+    public override void Disable() {
         button.interactable = false;
+    }
+
+    public override void OnDisabled() {
+        base.OnDisabled();
     }
 }

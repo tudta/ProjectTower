@@ -19,27 +19,7 @@ public class UIPopupScreen : UIScreen {
         base.Init();
     }
 
-    public override void ShowScreen() {
-        base.ShowScreen();
-    }
+    public virtual void DisablePreviousPopupScreen() {
 
-    public override void ShowScreenDone() {
-        base.ShowScreenDone();
-    }
-
-    public override void ShowScreenImmediate() {
-        base.ShowScreenImmediate();
-    }
-
-    public override void HideScreen(Action onDoneCallback = null) {
-        base.HideScreen();
-    }
-
-    public override void HideScreenDone() {
-        base.HideScreenDone();
-    }
-
-    public override void HideScreenImmediate() {
-        HideScreenImmediate();
     }
 }
