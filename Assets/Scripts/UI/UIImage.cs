@@ -3,32 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-[RequireComponent(typeof(Button))]
-public abstract class UIButton : UIElement {
-    public Button button = null;
+[RequireComponent(typeof(Image))]
+public class UIImage : UIElement {
+    public Image img = null;
 
     public virtual void Awake() {
         Init();
     }
 
     // Use this for initialization
-    public virtual void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	public virtual void Update () {
-		
-	}
+    public virtual void Start() {
 
-    public virtual void Init() {
-        button = gameObject.GetComponent<Button>();
-        enabledColor = button.image.color;
-        button.onClick.AddListener(OnClick);
     }
 
-    public virtual void OnClick() {
-        Debug.LogWarning("Base Button OnClick");
+    // Update is called once per frame
+    public virtual void Update() {
+
+    }
+
+    public virtual void Init() {
+        img = gameObject.GetComponent<Image>();
+        enabledColor = img.color;
     }
 
     public override void Show() {
@@ -48,8 +43,7 @@ public abstract class UIButton : UIElement {
     }
 
     public override void Enable() {
-        button.image.color = enabledColor;
-        button.interactable = true;
+        img.color = enabledColor;
         base.Enable();
     }
 
@@ -58,8 +52,7 @@ public abstract class UIButton : UIElement {
     }
 
     public override void Disable() {
-        button.image.color = disabledColor;
-        button.interactable = false;
+        img.color = disabledColor;
         base.Disable();
     }
 

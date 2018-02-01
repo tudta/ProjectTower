@@ -23,6 +23,7 @@ public abstract class UISlider : UIElement {
 
     public virtual void Init() {
         slider = gameObject.GetComponent<Slider>();
+        enabledColor = slider.image.color;
         slider.onValueChanged.AddListener(OnValueChange);
     }
 
@@ -47,7 +48,9 @@ public abstract class UISlider : UIElement {
     }
 
     public override void Enable() {
+        slider.image.color = enabledColor;
         slider.interactable = true;
+        base.Enable();
     }
 
     public override void OnEnabled() {
@@ -55,7 +58,9 @@ public abstract class UISlider : UIElement {
     }
 
     public override void Disable() {
+        slider.image.color = disabledColor;
         slider.interactable = false;
+        base.Disable();
     }
 
     public override void OnDisabled() {

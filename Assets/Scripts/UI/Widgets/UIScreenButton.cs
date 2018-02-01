@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class UIScreenButton : UIButton {
-    [SerializeField] private UIManager.Screens target;
+    [SerializeField] private ScreenType target;
 
     public override void Awake() {
         base.Awake();

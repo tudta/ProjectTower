@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 114347507059192502}
   - component: {fileID: 95286593090492536}
   - component: {fileID: 114505835085526072}
+  - component: {fileID: 114018737225407988}
   m_Layer: 0
   m_Name: Screen_KeyBindingsMenu
   m_TagString: Untagged
@@ -100,6 +101,20 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114018737225407988
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1928802737717462}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1bba33724135e4db7eff584eca9716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.28676468, g: 0.28676468, b: 0.28676468, a: 1}
+  img: {fileID: 0}
 --- !u!114 &114071742782417186
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -228,6 +243,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a76a9cc9dab2a8458f161cf30870c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
+  isPopup: 0
 --- !u!114 &114513125252763888
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -239,6 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0ba2e431689574ba971cbbc26c2018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   button: {fileID: 0}
 --- !u!114 &114700657531090216
 MonoBehaviour:

@@ -302,6 +302,7 @@ GameObject:
   - component: {fileID: 114432341633932834}
   - component: {fileID: 95243483929355098}
   - component: {fileID: 114477068496086250}
+  - component: {fileID: 114122519152871392}
   m_Layer: 5
   m_Name: Screen_SoundMenu
   m_TagString: Untagged
@@ -768,6 +769,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Game Sound Volume
+--- !u!114 &114122519152871392
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1517958514590416}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f1bba33724135e4db7eff584eca9716, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0.28676468, g: 0.28676468, b: 0.28676468, a: 1}
+  img: {fileID: 0}
 --- !u!114 &114146772725629098
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -779,6 +794,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee0ba2e431689574ba971cbbc26c2018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   button: {fileID: 0}
 --- !u!114 &114167231681698352
 MonoBehaviour:
@@ -1029,6 +1046,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d06bae2ea531b4eac725646f614155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   soundType: 1
 --- !u!114 &114349275830633480
 MonoBehaviour:
@@ -1041,6 +1060,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d06bae2ea531b4eac725646f614155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   soundType: 3
 --- !u!114 &114418978570067924
 MonoBehaviour:
@@ -1148,6 +1169,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a76a9cc9dab2a8458f161cf30870c78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
+  isPopup: 0
 --- !u!114 &114477193316952374
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1342,6 +1366,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d06bae2ea531b4eac725646f614155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   soundType: 2
 --- !u!114 &114648152504642270
 MonoBehaviour:
@@ -1724,6 +1750,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d06bae2ea531b4eac725646f614155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   soundType: 5
 --- !u!114 &114980857300129078
 MonoBehaviour:
@@ -1736,6 +1764,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1d06bae2ea531b4eac725646f614155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enabledColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 1}
   soundType: 4
 --- !u!222 &222035799530919002
 CanvasRenderer:

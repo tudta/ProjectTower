@@ -14,6 +14,9 @@ public class UIScreen : UIElement {
     private const string transitionParameterName = "IsOpen";
     private const string openedStateName = "Open";
     private const string closedStateName = "Closed";
+    [SerializeField] private bool isPopup = false;
+
+    public bool IsPopup {get{return isPopup;} set{isPopup = value;}}
 
     public virtual void Awake() {
         Init();
@@ -52,6 +55,9 @@ public class UIScreen : UIElement {
     }
 
     public override void OnShown() {
+        foreach (UIElement element in childUIElements) {
+            element.Enable();
+        }
         base.OnShown();
     }
 
@@ -60,6 +66,9 @@ public class UIScreen : UIElement {
     }
 
     private IEnumerator PlayHideScreenAnimation() {
+        foreach (UIElement element in childUIElements) {
+            element.Disable();
+        }
         screenAnim.SetBool(transitionParameterName, false);
         //yield return null;
         yield return new WaitForSeconds(screenAnim.GetCurrentAnimatorStateInfo(0).length);
@@ -74,6 +83,7 @@ public class UIScreen : UIElement {
         foreach (UIElement element in childUIElements) {
             element.Enable();
         }
+        base.Enable();
     }
 
     public override void OnEnabled() {
@@ -84,6 +94,7 @@ public class UIScreen : UIElement {
         foreach (UIElement element in childUIElements) {
             element.Disable();
         }
+        base.Disable();
     }
 
     public override void OnDisabled() {
